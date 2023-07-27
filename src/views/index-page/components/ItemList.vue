@@ -23,8 +23,9 @@
 
 <script setup>
 
-import {reactive, ref} from 'vue'
+import {reactive, ref, computed} from 'vue'
 import Item from './Item.vue'
+import {fetchMenuList} from "@/api/item-list";
 
 const filter1 = ref(0);
 const option1 = reactive([
@@ -41,20 +42,32 @@ const option2 = reactive([
 ])
 
 const activeMenu = ref(0);
-const menuList = reactive([
-    {title: "寿司卷"},
-    {title: "手握"},
-    {title: "稻荷"},
-    {title: "军舰"},
+const menuList = ref([
+    {title: "寿司卷", items: []},
+    {title: "手握", items: []},
+    {title: "稻荷", items: []},
+    {title: "军舰", items: []},
 ])
 
-const itemList = reactive([{
-    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
-    name: '寿司一号🍣',
-    tags: ['老板最爱', '肉松'],
-    price: 10,
-    sales: '100+'
-}])
+fetchMenuList(1).then(resp => {
+    console.log(resp)
+    menuList.value = resp.map(menu => {
+        return {
+            ...menu,
+            title: menu.name
+        }
+    })
+})
+
+const itemList = computed(() => {
+    const list = menuList.value[activeMenu.value].items || [];
+    return list.map(item => {
+        return {
+            ...item,
+            image: '/api/file/' + item.image
+        }
+    })
+})
 </script>
 
 <style lang="scss" scoped>

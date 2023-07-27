@@ -20,7 +20,11 @@
             <div class="item-info-bottom">
                 <div class="item-info-price">¥{{ props.price }}</div>
                 <div class="item-info-operation">
-                    <van-button size="mini" icon="plus"></van-button>
+                    <template v-if="showNumber">
+                        <van-button @click="handleRemove" size="mini" icon="minus"></van-button>
+                        <span class="item-info-operation__number">{{number}}</span>
+                    </template>
+                    <van-button @click="handleAddToCart" size="mini" icon="plus"></van-button>
                 </div>
             </div>
         </div>
@@ -28,7 +32,14 @@
 </template>
 
 <script setup>
+import {useCart} from "@/stores";
+import {computed} from "vue";
+
 const props = defineProps({
+    id: {
+        type: [String, Number],
+        default: ''
+    },
     image: {
         type: String,
         default: ''
@@ -50,6 +61,46 @@ const props = defineProps({
         default: 0
     }
 })
+
+const {
+    cartItemsMap,
+    addItem,
+    removeItem,
+} = useCart()
+
+const showNumber = computed(() => {
+    const item = cartItemsMap[props.id];
+    return !!item
+})
+const number = computed(() => {
+    const item = cartItemsMap[props.id];
+    if (item) {
+        return item.number
+    }
+})
+
+function handleAddToCart() {
+    console.log(props.id)
+    addItem({
+        id: props.id,
+        image: props.image,
+        name: props.name,
+        tags: props.tags,
+        sales: props.sales,
+        price: props.price,
+    })
+}
+
+function handleRemove() {
+    removeItem({
+        id: props.id,
+        image: props.image,
+        name: props.name,
+        tags: props.tags,
+        sales: props.sales,
+        price: props.price,
+    })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -99,6 +150,10 @@ const props = defineProps({
     color: var(--van-red);
 }
 .item-info-operation {
-
+    display: flex;
+    align-items: center;
+}
+.item-info-operation__number {
+    margin: 0 8px;
 }
 </style>

@@ -28,7 +28,16 @@
 <script setup>
 import {reactive, ref} from 'vue'
 import ItemList from '@/views/index-page/components/ItemList.vue'
-const imageList = reactive([{src: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"}])
+import {fetchBannerList} from "@/api/banner";
+const imageList = ref([])
+fetchBannerList().then(res => {
+    imageList.value = (res || []).map(item => {
+        return {
+            ...item,
+            src: '/api/file/' + item.code
+        }
+    })
+})
 
 </script>
 

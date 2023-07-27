@@ -62,18 +62,14 @@ const props = defineProps({
     }
 })
 
-const {
-    cartItemsMap,
-    addItem,
-    removeItem,
-} = useCart()
+const cartStore = useCart()
 
 const showNumber = computed(() => {
-    const item = cartItemsMap[props.id];
+    const item = cartStore.cartItemsMap[props.id];
     return !!item
 })
 const number = computed(() => {
-    const item = cartItemsMap[props.id];
+    const item = cartStore.cartItemsMap[props.id];
     if (item) {
         return item.number
     }
@@ -81,7 +77,7 @@ const number = computed(() => {
 
 function handleAddToCart() {
     console.log(props.id)
-    addItem({
+    cartStore.addItem({
         id: props.id,
         image: props.image,
         name: props.name,
@@ -92,7 +88,7 @@ function handleAddToCart() {
 }
 
 function handleRemove() {
-    removeItem({
+    cartStore.removeItem({
         id: props.id,
         image: props.image,
         name: props.name,

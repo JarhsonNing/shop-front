@@ -16,6 +16,7 @@
         </div>
         <transition name="slide-fade">
             <div v-if="showCart" class="item-list-cart">
+                <list-cart></list-cart>
             </div>
         </transition>
     </div>
@@ -27,6 +28,7 @@ import {reactive, ref, computed} from 'vue'
 import Item from './Item.vue'
 import {fetchMenuList} from "@/api/item-list";
 import {useCart} from "@/stores";
+import ListCart from '@/views/index-page/components/ListCart.vue'
 
 const activeMenu = ref(0);
 const menuList = ref([])
@@ -55,10 +57,10 @@ const itemList = computed(() => {
 })
 
 
-const { cartItems } = useCart();
+const cartStore = useCart();
 const showCart = computed(() => {
-    console.log('showCart', cartItems.length > 0)
-    return cartItems.length > 0
+    console.log('showCart', cartStore.cartItems.length > 0)
+    return cartStore.cartItems.length > 0
 })
 </script>
 
@@ -90,8 +92,6 @@ const showCart = computed(() => {
         left: 20px;
         right: 20px;
         bottom: 20px;
-        height: 20px;
-        background-color: red;
     }
 
 }

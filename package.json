@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nestjs/mapped-types": "*",
     "axios": "^1.4.0",
     "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
     "pinia": "^2.1.4",
     "vant": "^4.6.3",
     "vue": "^3.3.4",

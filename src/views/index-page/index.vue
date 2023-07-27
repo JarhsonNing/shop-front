@@ -9,7 +9,7 @@
         </div>
         <van-swipe v-if="imageList.length" class="index-page-swipe" :autoplay="3000" indicator-color="white">
             <van-swipe-item v-for="image in imageList">
-                <div class="index-page-swipe__img">
+                <div :style="SwiperStyle" class="index-page-swipe__img">
                     <van-image
                         height="100%"
                         width="100%"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
+import {onUnmounted, reactive, ref} from 'vue'
 import ItemList from '@/views/index-page/components/ItemList.vue'
 import {fetchBannerList} from "@/api/banner";
 const imageList = ref([])
@@ -38,6 +38,22 @@ fetchBannerList().then(res => {
         }
     })
 })
+const SwiperStyle = reactive({
+    height: (383 / 900 * document.body.clientWidth) + 'px'
+})
+
+console.log(SwiperStyle)
+
+function handleResize() {
+    SwiperStyle.height = 383 / 900 * document.body.clientWidth + 'px'
+}
+
+window.addEventListener('resize', handleResize)
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+})
+
+
 
 </script>
 

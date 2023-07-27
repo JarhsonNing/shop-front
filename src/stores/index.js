@@ -12,6 +12,13 @@ export const useCart = defineStore('cart', () => {
         });
         Object.assign(cartItemsMap, map);
     })
+
+    const totalPrice = computed(() => {
+        return cartItems.reduce((prev, cur) => {
+            return prev + (cur.number * cur.price)
+        }, 0)
+    })
+
     const addItem = function (item) {
         if (cartItemsMap[item.id]) {
             cartItemsMap[item.id].number += 1
@@ -38,6 +45,7 @@ export const useCart = defineStore('cart', () => {
     return {
         cartItems,
         cartItemsMap,
+        totalPrice,
         addItem,
         removeItem
     }

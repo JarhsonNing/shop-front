@@ -9,9 +9,10 @@
                 </van-sidebar>
             </div>
             <div class="item-list__item">
-                <template v-for="item in itemList">
+                <template v-for="item in itemList" :key="activeMenu + item.name">
                     <Item v-bind="item"></Item>
                 </template>
+                <div style="height: 48px"></div>
             </div>
         </div>
         <transition name="slide-fade">
@@ -85,6 +86,7 @@ const showCart = computed(() => {
     .item-list__item {
         flex: 1;
         height: 100%;
+        overflow-y: scroll;
     }
 
     .item-list-cart {
